@@ -1,4 +1,4 @@
-import { createRef, useEffect, useMemo, useState } from "react";
+import { createRef, useEffect, useMemo, useRef, useState } from "react";
 
 import Map from 'ol/Map.js';
 import OSM from 'ol/source/OSM.js';
@@ -11,23 +11,10 @@ import Icon from "ol/style/Icon";
 import GeoJSON from 'ol/format/GeoJSON.js';
 
 const MapComponent = () => {
-  const [features, setFeatures] = useState(null);
-    const mapRef = createRef();
-    
-    const map = useMemo(() => {
-        return new Map({
-          layers: [
-            new TileLayer({
-              source: new OSM(),
-            }),
-          ],
-          view: new View({
-            center: [0, 0],
-            zoom: 2,
-            projection: 'EPSG:4326'
-          }),
-        })
-    }, [])
+    // const [map, setMap] = useState(null)
+    const [features, setFeatures] = useState(null)
+
+    const mapRef = useRef(null);
 
     const vector = useMemo(() => new VectorLayer({
       source: new VectorSource({
@@ -48,29 +35,53 @@ const MapComponent = () => {
         res.json().then((data) => {
           const feats = new GeoJSON().readFeatures(data)
           setFeatures(feats)
+        }).catch((err) => {
+          console.log(err)
         })
       }).catch((err) => {
         console.log(err);
       })
     }
 
-    useEffect(() => {
-        map.setTarget(mapRef.current)
-        if (!map.getLayers().getArray().find(layer => layer.getProperties().name === 'stam') && features){
-          vector.getSource().addFeatures(features)
-          map.addLayer(vector)
-        }
+    // useEffect(() => {
+    //     map.setTarget(mapRef.current)
+    //     if (!map.getLayers().getArray().find(layer => layer.getProperties().name === 'stam') && features){
+    //       vector.getSource().addFeatures(features)
+    //       map.addLayer(vector)
+    //     }
 
-    }, [map, features])
+    // }, [map, features])
 
     useEffect(() => {
-      getFeatures()
+      if(!mapRef.current){
+        const mapInstance = new Map({
+          layers: [
+            new TileLayer({
+              source: new OSM(),
+            }),
+          ],
+          target: 'map',
+          view: new View({
+            center: [0, 0],
+            zoom: 2,
+            projection: 'EPSG:4326'
+          }),
+        })
+        mapRef.current = mapInstance
+        getFeatures();
+      }
     }, [])
 
+    useEffect(() => {
+        if(mapRef && features){
+          vector.getSource().addFeatures(features)
+          mapRef.current.addLayer(vector)
+        }
+    }, [features])
     
     return (
         <div style={{ width: '100vw', height: '100vh'}}>
-           <div ref={mapRef} style={{ width: '100%', height: '100%'}}/>
+           <div id="map" style={{ width: '100%', height: '100%'}}/>
         </div>
     )
 }
