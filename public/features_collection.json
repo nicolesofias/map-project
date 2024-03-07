@@ -3,7 +3,12 @@
     "features": [
       {
         "type": "Feature",
-        "properties": {},
+        "properties": {
+            "name": "Nicoland",
+            "description": "The tea here is free",
+            "ruler": "Nicole",
+            "established": "2002"
+        },
         "geometry": {
           "coordinates": [
             38.28437101356624,

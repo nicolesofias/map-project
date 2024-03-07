@@ -1,6 +1,6 @@
 
 import './App.css'
-import MapComponent from './MapComponet'
+import MapComponent from './components/MapComponet'
 
 function App() {
 
