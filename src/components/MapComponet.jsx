@@ -12,13 +12,15 @@ import GeoJSON from 'ol/format/GeoJSON.js';
 import DialogComponent from "./DialogComponent";
 import PopoverComponent from "./PopoverComponent";
 import Overlay from "ol/Overlay";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
+import Draw from 'ol/interaction/Draw.js';
+import Source from "ol/source/Source";
 
 
 const MapComponent = () => {
     // const [map, setMap] = useState(null)
     const [features, setFeatures] = useState(null)
-    const [openDialog, setOpenDialog] = useState(false)
+    // const [openDialog, setOpenDialog] = useState(false)
     const [openPopup, setOpenPopup] = useState(false)
     const [properties, setProperties] = useState({
       name: "",
@@ -26,13 +28,11 @@ const MapComponent = () => {
       ruler: "",
       established: ""
     })
-    const [anchorEl, setAnchorEl] = useState(null)
     const mapRef = useRef(null);
     const popupContainerRef = useRef(null);
+    const source = new VectorSource({wrapX: false});
     const vector = useMemo(() => new VectorLayer({
-      source: new VectorSource({
-        // features: features
-      }),
+      source: new VectorSource({}),
       properties: {
           name: 'stam'
       },
@@ -60,10 +60,7 @@ const MapComponent = () => {
       })
     }
 
-    const displayFeatureInfo = function (pixel) {
-      vector.getFeatures(pixel).then(function (features) {
-        const feature = features.length ? features[0] : undefined;
-        if (features.length) {
+    const getFeatureInfo = function (feature) {
           const info = feature.getProperties()
           setProperties({
             name: info.name,
@@ -72,16 +69,6 @@ const MapComponent = () => {
             established: info.established
           })
           // setOpenDialog(true);
-        }
-        else {
-          setProperties({
-            name: "",
-            description: "",
-            ruler: "",
-            established: ""
-          })
-        }
-      })
     }
 
     useEffect(() => {
@@ -105,24 +92,46 @@ const MapComponent = () => {
     }, [])
 
     const handleMapClick = (evt) => {
-      if (mapRef.current.hasFeatureAtPixel(evt.pixel)) {
-        displayFeatureInfo(evt.pixel)
+      console.log("clicked");
+      vector.getFeatures(evt.pixel).then(function (features) {
+        const feature = features.length ? features[0] : undefined;
+        if (feature) {
+          getFeatureInfo(feature)
+          mapRef.current.addOverlay(new Overlay({
+            id: 'popup',
+            element: popupContainerRef.current,
+            position: feature.getGeometry().getCoordinates()
+          }));
+          setOpenPopup(true)
+        }
+        else {
+          setProperties({
+            name: "",
+            description: "",
+            ruler: "",
+            established: ""
+          })
+        }
+      })
+    }
 
-        mapRef.current.addOverlay(new Overlay({
-          id: 'popup',
-          element: popupContainerRef.current,
-          position: mapRef.current.getFeaturesAtPixel(evt.pixel)[0].getGeometry().getCoordinates()
-        }));
-
-        setOpenPopup(true)
-      }
+    const handleInteraction = () => {
+      const draw = new Draw({
+        source: source,
+        type: "Polygon",
+      });
+      mapRef.current.addInteraction(draw);
     }
     useEffect(() => {
         if(mapRef.current && features){
           vector.getSource().addFeatures(features)
           mapRef.current.addLayer(vector)
+          const newVector = new VectorLayer({
+            source: source,
+          });
+          mapRef.current.addLayer(newVector);
         }
-    }, [mapRef.current, features])
+    }, [features])
 
     useEffect(() => {
         if (mapRef.current) {
@@ -130,19 +139,20 @@ const MapComponent = () => {
         }
           
         return () => {
-          mapRef.current.un('click', handleMapClick);
+          mapRef.current.on('click', handleMapClick);
         }
     }, [mapRef.current])
     
     return (
         <div style={{ width: '100vw', height: '100vh'}}>
           <div id="map" style={{ width: '100%', height: '100%'}}/>
+          <Button variant="contained" onClick={handleInteraction} sx={{mt: '10px', marginLeft: '10px'}}>create a polygon</Button>
            {/* <DialogComponent open={openDialog} setOpen={setOpenDialog} info={properties}/> */}
           <Box ref={popupContainerRef}>
             {/* { !!properties?.name && <Box>
                 { Object.keys(properties).map(prop => <Typography key={prop}>{properties[prop]}</Typography>)}
             </Box> } */}
-            <PopoverComponent anchorEl={popupContainerRef.current} setOpen={setOpenPopup} info={properties} open={openPopup} />
+            <PopoverComponent anchorEl={popupContainerRef.current} setOpen={setOpenPopup} info={properties} open={openPopup} setProperties={setProperties}/>
           </Box>
         </div>
     )
