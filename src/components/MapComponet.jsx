@@ -15,6 +15,7 @@ import Overlay from "ol/Overlay";
 import { Box, Button, Typography } from "@mui/material";
 import Draw from 'ol/interaction/Draw.js';
 import Source from "ol/source/Source";
+import 'ol/ol.css'
 
 
 const MapComponent = () => {
@@ -144,17 +145,14 @@ const MapComponent = () => {
     }, [mapRef.current])
     
     return (
-        <div style={{ width: '100vw', height: '100vh'}}>
-          <div id="map" style={{ width: '100%', height: '100%'}}/>
+        <>
+          <div id="map" style={{ width: '100%', height: '400px'}}/>
           <Button variant="contained" onClick={handleInteraction} sx={{mt: '10px', marginLeft: '10px'}}>create a polygon</Button>
            {/* <DialogComponent open={openDialog} setOpen={setOpenDialog} info={properties}/> */}
           <Box ref={popupContainerRef}>
-            {/* { !!properties?.name && <Box>
-                { Object.keys(properties).map(prop => <Typography key={prop}>{properties[prop]}</Typography>)}
-            </Box> } */}
             <PopoverComponent anchorEl={popupContainerRef.current} setOpen={setOpenPopup} info={properties} open={openPopup} setProperties={setProperties}/>
           </Box>
-        </div>
+        </>
     )
 }
 
