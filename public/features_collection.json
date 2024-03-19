@@ -1,0 +1,69 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+            "name": "Nicoland",
+            "description": "The tea here is free",
+            "ruler": "Nicole",
+            "established": "2002"
+        },
+        "geometry": {
+          "coordinates": [
+            38.28437101356624,
+            34.55843608120105
+          ],
+          "type": "Point"
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Nicolebanon",
+          "description": "we drink ahmad tea here",
+          "ruler": "Nicole",
+          "established": "2002"
+        },
+        "geometry": {
+          "coordinates": [
+            35.48341453492759,
+            33.89170010073856
+          ],
+          "type": "Point"
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Yemenicole",
+          "description": "we don't know what tea is",
+          "ruler": "Nicole",
+          "established": "2002"
+        },
+        "geometry": {
+          "coordinates": [
+            43.11961818622862,
+            14.763858722908296
+          ],
+          "type": "Point"
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Berlinicole",
+          "description": "we drink more than tea here",
+          "ruler": "Nicole",
+          "established": "2002"
+        },
+        "geometry": {
+          "coordinates": [
+            13.388584038207853,
+            52.51583162901346
+          ],
+          "type": "Point"
+        }
+      }
+    ]
+  }

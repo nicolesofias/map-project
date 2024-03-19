@@ -1,0 +1,202 @@
+{
+    "vector_layers":
+    [
+        {
+            "properties": {
+                "name": "red layer"
+            },
+            "marker_source": "/map-marker.svg"
+            ,
+            "features_collection": 
+            {
+              "type": "FeatureCollection",
+              "features": [
+                {
+                  "type": "Feature",
+                  "properties": {
+                      "name": "Nicoland",
+                      "description": "The tea here is free",
+                      "ruler": "Nicole",
+                      "established": "2002"
+                  },
+                  "geometry": {
+                    "coordinates": [
+                      38.28437101356624,
+                      34.55843608120105
+                    ],
+                    "type": "Point"
+                  }
+                },
+                {
+                  "type": "Feature",
+                  "properties": {
+                    "name": "Nicolebanon",
+                    "description": "we drink ahmad tea here",
+                    "ruler": "Nicole",
+                    "established": "2002"
+                  },
+                  "geometry": {
+                    "coordinates": [
+                      35.48341453492759,
+                      33.89170010073856
+                    ],
+                    "type": "Point"
+                  }
+                },
+                {
+                  "type": "Feature",
+                  "properties": {
+                    "name": "Yemenicole",
+                    "description": "we don't know what tea is",
+                    "ruler": "Nicole",
+                    "established": "2002"
+                  },
+                  "geometry": {
+                    "coordinates": [
+                      43.11961818622862,
+                      14.763858722908296
+                    ],
+                    "type": "Point"
+                  }
+                },
+                {
+                  "type": "Feature",
+                  "properties": {
+                    "name": "Berlinicole",
+                    "description": "we drink more than tea here",
+                    "ruler": "Nicole",
+                    "established": "2002"
+                  },
+                  "geometry": {
+                    "coordinates": [
+                      13.388584038207853,
+                      52.51583162901346
+                    ],
+                    "type": "Point"
+                  }
+                }
+              ]
+          }
+        },
+        {
+            "properties": {
+                "name": "black layer"
+            },
+            "marker_source": "map-marker-svgrepo-com.svg",
+            "features_collection": 
+            {
+                "type": "FeatureCollection",
+                "features": [
+                    {
+                        "type": "Feature",
+                        "properties": {
+                            "name": "Sofia",
+                            "description": "nicole's middle name",
+                            "ruler": "Nicole",
+                            "established": "2002"
+                        },
+                        "geometry": {
+                          "coordinates": [
+                            23.317341576758793,
+                            42.699839247193125
+                          ],
+                          "type": "Point"
+                        }
+                    },
+                    {
+                        "type": "Feature",
+                        "properties": {
+                            "name": "Nicolyon",
+                            "description": "we drink french tea with snails here",
+                            "ruler": "Nicole",
+                            "established": "2002"
+                        },
+                        "geometry": {
+                          "coordinates": [
+                            4.814177684220169,
+                            45.77989443849097
+                          ],
+                          "type": "Point"
+                        }
+                    },
+                    {
+                        "type": "Feature",
+                        "properties": {
+                            "name": "Iranicole",
+                            "description": "we drink antisemetic tea here",
+                            "ruler": "Nicole from Iran",
+                            "established": "2002"
+                        },
+                        "geometry": {
+                          "coordinates": [
+                            54.25817663968755,
+                            32.50193525172361
+                          ],
+                          "type": "Point"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+          "properties": {
+            "name": "yellow layer"
+          },
+          "marker_source": "yellow.svg",
+          "features_collection": {
+              "type": "FeatureCollection",
+              "features": [
+                {
+                  "type": "Feature",
+                  "properties": {
+                    "name": "Nicolimassol",
+                    "description": "we partea here",
+                    "ruler": "Nicole",
+                    "established": "2002"
+                  },
+                  "geometry": {
+                    "coordinates": [
+                      33.0336470611897,
+                      34.68378310059113
+                    ],
+                    "type": "Point"
+                  }
+                },
+                {
+                  "type": "Feature",
+                  "properties": {
+                    "name": "Lisbonicole",
+                    "description": "we drink spanish tea here",
+                    "ruler": "Nicole",
+                    "established": "2002"
+                  },
+                  "geometry": {
+                    "coordinates": [
+                      -9.155287180598492,
+                      38.7412299685418
+                    ],
+                    "type": "Point"
+                  }
+                },
+                {
+                  "type": "Feature",
+                  "properties": {
+                    "name": "Milanicole",
+                    "description": "we drink italian tea here",
+                    "ruler": "Nicole",
+                    "established": "2002"
+                  }
+                  ,
+                  "geometry": {
+                    "coordinates": [
+                      9.192830778876754,
+                      45.48781389186101
+                    ],
+                    "type": "Point"
+                  }
+                }
+              ]
+            }
+          }
+    ]
+}
