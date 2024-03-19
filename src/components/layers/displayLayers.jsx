@@ -15,12 +15,7 @@ const DisplayLayers = () => {
     const mapRef = useRef(useMap());
     const popupContainerRef = useRef(null);
     const [openPopup, setOpenPopup] = useState(false)
-    const [properties, setProperties] = useState({
-        name: "",
-        description: "",
-        ruler: "",
-        established: ""
-    })
+    const [properties, setProperties] = useState(null)
 
     const getFeatureInfo = function (feature) {
         const info = feature.getProperties()

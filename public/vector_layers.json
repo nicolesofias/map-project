@@ -137,6 +137,66 @@
                     }
                 ]
             }
-        }
+        },
+        {
+          "properties": {
+            "name": "yellow layer"
+          },
+          "marker_source": "yellow.svg",
+          "features_collection": {
+              "type": "FeatureCollection",
+              "features": [
+                {
+                  "type": "Feature",
+                  "properties": {
+                    "name": "Nicolimassol",
+                    "description": "we partea here",
+                    "ruler": "Nicole",
+                    "established": "2002"
+                  },
+                  "geometry": {
+                    "coordinates": [
+                      33.0336470611897,
+                      34.68378310059113
+                    ],
+                    "type": "Point"
+                  }
+                },
+                {
+                  "type": "Feature",
+                  "properties": {
+                    "name": "Lisbonicole",
+                    "description": "we drink spanish tea here",
+                    "ruler": "Nicole",
+                    "established": "2002"
+                  },
+                  "geometry": {
+                    "coordinates": [
+                      -9.155287180598492,
+                      38.7412299685418
+                    ],
+                    "type": "Point"
+                  }
+                },
+                {
+                  "type": "Feature",
+                  "properties": {
+                    "name": "Milanicole",
+                    "description": "we drink italian tea here",
+                    "ruler": "Nicole",
+                    "established": "2002"
+                  }
+                  ,
+                  "geometry": {
+                    "coordinates": [
+                      9.192830778876754,
+                      45.48781389186101
+                    ],
+                    "type": "Point"
+                  }
+                }
+              ]
+            }
+          }
     ]
 }

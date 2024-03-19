@@ -1,21 +1,16 @@
-import { Box, Popover, Typography } from '@mui/material'
+import { Popover, Typography } from '@mui/material'
 import React from 'react'
 
 const PopoverComponent = ({anchorEl, open, setOpen, info, setProperties}) => {
 
     const handleClose = () => {
         setOpen(false);
-        setProperties({
-            name: "",
-            description: "",
-            ruler: "",
-            established: ""
-        })
+        setProperties(null)
     }
   return (
         <Popover open={open} anchorEl={anchorEl} onClose={handleClose}>
-            {Object.keys(info).map((key) => (
-                 info[key] !== "" && <Typography key={key}>{key}: {info[key]}</Typography>
+              {info && Object.keys(info).map((key) => (
+                 <Typography key={key}>{key}: {info[key]}</Typography>
             ))
             }
         </Popover>
