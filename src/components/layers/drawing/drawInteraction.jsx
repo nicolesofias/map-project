@@ -11,12 +11,13 @@ const DrawInteraction = () => {
     const mapRef = useRef(useMap())
     const [disableButton, setDisableButton] = useState(false)
     const [counterArray, setCounterArray] = useState(null)
-    const vector_layers_without_drawing = getArrayOfVectorLayersWithoutDrawing(mapRef.current)
+    const [vector_layers_without_drawing, set_vector_layers_without_drawing] = useState([])
 
     const onDraw = (event) => {
-        const vector_layers_without_drawing = getArrayOfVectorLayersWithoutDrawing(mapRef.current)
+        const layers_without_drawing = getArrayOfVectorLayersWithoutDrawing(mapRef.current)
+        set_vector_layers_without_drawing(layers_without_drawing)
         const geometry = event.feature.getGeometry();
-        const counter = featuresCounter(vector_layers_without_drawing, geometry)
+        const counter = featuresCounter(layers_without_drawing, geometry)
         setCounterArray(counter)
     }
 
