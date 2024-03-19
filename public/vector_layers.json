@@ -3,7 +3,7 @@
     [
         {
             "properties": {
-                "name": "first"
+                "name": "red layer"
             },
             "marker_source": "/map-marker.svg"
             ,
@@ -80,7 +80,7 @@
         },
         {
             "properties": {
-                "name": "second"
+                "name": "black layer"
             },
             "marker_source": "map-marker-svgrepo-com.svg",
             "features_collection": 
