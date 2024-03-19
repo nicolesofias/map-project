@@ -1,13 +1,14 @@
 
 import './App.css'
-import MapComponent from './components/MapComponet'
+import MapComponent from './components/map/MapComponet'
+import {MapContextProvider} from './contexts/mapContext/mapContext'
 
 function App() {
 
   return (
-    <div style={{width: '100vw', height: '100vh'}}>
+    <MapContextProvider>
       <MapComponent/>
-    </div>
+    </MapContextProvider>
   )
 }
 
