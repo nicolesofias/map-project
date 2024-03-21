@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useRef, useState } from 'react'
-import createMap from '../../components/map/createMap'
+import { createMap } from '../../components/map/mapUtils';
+
 
 export const MapContext = createContext()
 

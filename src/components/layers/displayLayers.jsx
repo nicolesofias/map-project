@@ -1,23 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useMap } from '../../contexts/mapContext/mapContext';
-import { getLayers } from './getLayers';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import Style from 'ol/style/Style';
 import Icon from 'ol/style/Icon';
 import { Box } from '@mui/material';
-import PopoverComponent from '../popover/PopoverComponent';
+import PopoverComponent from '../map/popover/PopoverComponent';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import { Overlay } from 'ol';
-import { getArrayOfAllLayers, getArrayOfVectorLayersWithoutDrawing } from './getArrayOfLayers';
+import { getArrayOfAllLayers, getArrayOfVectorLayersWithoutDrawing, getLayers } from '../map/mapUtils';
 
 const DisplayLayers = () => {
-    const mapRef = useRef(useMap());
+    const map = useMap();
     const popupContainerRef = useRef(null);
     const [openPopup, setOpenPopup] = useState(false)
     const [properties, setProperties] = useState(null)
 
-    const getFeatureInfo = function (feature) {
+    const showInfoForPopup = (feature) => {
         const info = feature.getProperties()
         setProperties({
           name: info.name,
@@ -25,6 +24,11 @@ const DisplayLayers = () => {
           ruler: info.ruler,
           established: info.established
         })
+        map.addOverlay(new Overlay({
+          id: 'popup',
+          element: popupContainerRef.current,
+          position: feature.getGeometry().getCoordinates()
+        }));
     }
 
     const addLayersToMap = () => {
@@ -44,36 +48,36 @@ const DisplayLayers = () => {
                 })
                 const feats = new GeoJSON().readFeatures(vector_layer_json.features_collection);
                 current_vector_layer.getSource().addFeatures(feats)
-                if(!getArrayOfAllLayers(mapRef.current).some((layer) => layer.getProperties().name === current_vector_layer.getProperties().name)){
-                    mapRef.current.addLayer(current_vector_layer)
+                if(!getArrayOfAllLayers(map).some((layer) => layer.getProperties().name === current_vector_layer.getProperties().name)){
+                    map.addLayer(current_vector_layer)
                 }
             })
         }).catch((err) => console.log(err));
     }
 
     const handleMapClick = (evt) => {
-        getArrayOfVectorLayersWithoutDrawing(mapRef.current).forEach((vectorLayer) => {vectorLayer.getFeatures(evt.pixel).then(function (features) {
+        getArrayOfVectorLayersWithoutDrawing(map).forEach((vectorLayer) => {vectorLayer.getFeatures(evt.pixel).then(function (features) {
           const feature = features.length ? features[0] : undefined;
           if (feature) {
-            getFeatureInfo(feature)
-            mapRef.current.addOverlay(new Overlay({
-              id: 'popup',
-              element: popupContainerRef.current,
-              position: feature.getGeometry().getCoordinates()
-            }));
+            showInfoForPopup(feature)
             setOpenPopup(true)
           }
         })})
       }
+    
+    const handleClosePopover = () => {
+        setOpenPopup(false);
+        setProperties(null)
+    }
 
     useEffect(() => {
         addLayersToMap()
-        mapRef.current.on('click', handleMapClick)
+        map.on('click', handleMapClick)
     }, [])
 
     return (
         <Box ref={popupContainerRef}>
-            <PopoverComponent anchorEl={popupContainerRef.current} setOpen={setOpenPopup} info={properties} open={openPopup} setProperties={setProperties}/>
+            <PopoverComponent anchorEl={popupContainerRef.current} handleClose={handleClosePopover} info={properties} open={openPopup}/>
         </Box>
     )
 }

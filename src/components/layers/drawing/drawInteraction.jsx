@@ -4,17 +4,19 @@ import Draw from 'ol/interaction/Draw'
 import VectorSource from 'ol/source/Vector'
 import VectorLayer from 'ol/layer/Vector'
 import { Box, Button, Typography } from '@mui/material'
-import { getArrayOfAllLayers, getArrayOfVectorLayersWithoutDrawing } from '../getArrayOfLayers'
+import { getArrayOfAllLayers, getArrayOfVectorLayersWithoutDrawing } from '../../map/mapUtils'
 import featuresCounter from './featuresCounter'
+import { LayerNames } from '../../../constants/layerNames'
+import { GeoJsonTypes } from '../../../constants/GeoJsonTypes'
 
 const DrawInteraction = () => {
-    const mapRef = useRef(useMap())
+    const map = useMap()
     const [disableButton, setDisableButton] = useState(false)
     const [counterArray, setCounterArray] = useState(null)
     const [vector_layers_without_drawing, set_vector_layers_without_drawing] = useState([])
 
     const onDraw = (event) => {
-        const layers_without_drawing = getArrayOfVectorLayersWithoutDrawing(mapRef.current)
+        const layers_without_drawing = getArrayOfVectorLayersWithoutDrawing(map)
         set_vector_layers_without_drawing(layers_without_drawing)
         const geometry = event.feature.getGeometry();
         const counter = featuresCounter(layers_without_drawing, geometry)
@@ -22,16 +24,16 @@ const DrawInteraction = () => {
     }
 
     const handleInteraction = () => {
-        if (!mapRef.current) return;
-        const source = getArrayOfAllLayers(mapRef.current).find(element => element.getProperties().name === 'drawLayer').getSource()
+        if (!map) return;
+        const source = getArrayOfAllLayers(map).find(element => element.getProperties().name === LayerNames.DrawLayerName).getSource()
         const draw = new Draw({
           source: source,
-          type: "Polygon",
+          type: GeoJsonTypes.Polygon,
         });
 
         draw.on('drawend', onDraw);
 
-        mapRef.current.addInteraction(draw);
+        map.addInteraction(draw);
         source.on('addfeature', function(evt){
             draw.setActive(false);
         });
@@ -40,9 +42,9 @@ const DrawInteraction = () => {
     }
 
     const handleClearDraw = () => {
-        if (!mapRef.current) return;
+        if (!map) return;
 
-        getArrayOfAllLayers(mapRef.current).find(element => element.getProperties().name === 'drawLayer').getSource().clear();
+        getArrayOfAllLayers(map).find(element => element.getProperties().name === LayerNames.DrawLayerName).getSource().clear();
         setDisableButton(false)
         setCounterArray(null)
     }
@@ -50,9 +52,9 @@ const DrawInteraction = () => {
     useEffect(() => {
           const newVector = new VectorLayer({
             source:  new VectorSource({wrapX: false}),
-            name: "drawLayer"
+            name: LayerNames.DrawLayerName
           });
-          mapRef.current.addLayer(newVector);
+          map.addLayer(newVector);
     }, [])
 
 
