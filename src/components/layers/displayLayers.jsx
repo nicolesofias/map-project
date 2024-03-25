@@ -8,21 +8,27 @@ import { Box } from '@mui/material';
 import PopoverComponent from '../map/popover/PopoverComponent';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import { Overlay } from 'ol';
-import { getArrayOfAllLayers, getArrayOfVectorLayersWithoutDrawing, getLayers } from '../map/mapUtils';
+import { findFeatureById, getArrayOfAllLayers, getArrayOfVectorLayersWithoutDrawing, getLayers } from '../map/mapUtils';
+import { createLine } from '../features/createLine';
+import handleConnectedFeatures from '../features/handleConnectedFeatures';
+import { LayerNames } from '../../constants/layerNames';
 
 const DisplayLayers = () => {
     const map = useMap();
     const popupContainerRef = useRef(null);
     const [openPopup, setOpenPopup] = useState(false)
     const [properties, setProperties] = useState(null)
+    // const [vector_layers_without_drawing, set_vector_layers_without_drawing] = useState(null)
 
     const showInfoForPopup = (feature) => {
         const info = feature.getProperties()
         setProperties({
+          type: info.type,
           name: info.name,
           description: info.description,
           ruler: info.ruler,
-          established: info.established
+          established: info.established,
+          site_name: info.site_name ? info.site_name : ""
         })
         map.addOverlay(new Overlay({
           id: 'popup',
@@ -52,15 +58,24 @@ const DisplayLayers = () => {
                     map.addLayer(current_vector_layer)
                 }
             })
+            // add the lines layer
+            const linesLayer = new VectorLayer({
+              source: new VectorSource(),
+              properties: {
+                  name: LayerNames.LinesLayerName
+              },
+          })
+          map.addLayer(linesLayer)
         }).catch((err) => console.log(err));
     }
 
     const handleMapClick = (evt) => {
-        getArrayOfVectorLayersWithoutDrawing(map).forEach((vectorLayer) => {vectorLayer.getFeatures(evt.pixel).then(function (features) {
+          getArrayOfVectorLayersWithoutDrawing(map).forEach((vectorLayer) => {vectorLayer.getFeatures(evt.pixel).then(function (features) {
           const feature = features.length ? features[0] : undefined;
           if (feature) {
             showInfoForPopup(feature)
             setOpenPopup(true)
+            handleConnectedFeatures(feature, map)
           }
         })})
       }

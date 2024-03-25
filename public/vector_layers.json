@@ -13,11 +13,14 @@
               "features": [
                 {
                   "type": "Feature",
+                  "id": "4",
                   "properties": {
+                      "type": "device",
                       "name": "Nicoland",
                       "description": "The tea here is free",
                       "ruler": "Nicole",
-                      "established": "2002"
+                      "established": "2002",
+                      "site_id": "1"
                   },
                   "geometry": {
                     "coordinates": [
@@ -29,11 +32,14 @@
                 },
                 {
                   "type": "Feature",
+                  "id": "5",
                   "properties": {
+                    "type": "device",
                     "name": "Nicolebanon",
                     "description": "we drink ahmad tea here",
                     "ruler": "Nicole",
-                    "established": "2002"
+                    "established": "2002",
+                    "site_id": "2"
                   },
                   "geometry": {
                     "coordinates": [
@@ -45,11 +51,14 @@
                 },
                 {
                   "type": "Feature",
+                  "id": "6",
                   "properties": {
+                    "type": "device",
                     "name": "Yemenicole",
                     "description": "we don't know what tea is",
                     "ruler": "Nicole",
-                    "established": "2002"
+                    "established": "2002",
+                    "site_id": "3"
                   },
                   "geometry": {
                     "coordinates": [
@@ -61,11 +70,14 @@
                 },
                 {
                   "type": "Feature",
+                  "id": "7",
                   "properties": {
+                    "type": "device",
                     "name": "Berlinicole",
                     "description": "we drink more than tea here",
                     "ruler": "Nicole",
-                    "established": "2002"
+                    "established": "2002",
+                    "site_id": "3"
                   },
                   "geometry": {
                     "coordinates": [
@@ -80,7 +92,7 @@
         },
         {
             "properties": {
-                "name": "black layer"
+                "name": "grey layer"
             },
             "marker_source": "map-marker-svgrepo-com.svg",
             "features_collection": 
@@ -89,11 +101,14 @@
                 "features": [
                     {
                         "type": "Feature",
+                        "id": "8",
                         "properties": {
+                            "type": "device",
                             "name": "Sofia",
                             "description": "nicole's middle name",
                             "ruler": "Nicole",
-                            "established": "2002"
+                            "established": "2002",
+                            "site_id": "1"
                         },
                         "geometry": {
                           "coordinates": [
@@ -105,11 +120,14 @@
                     },
                     {
                         "type": "Feature",
+                        "id": "9",
                         "properties": {
+                            "type": "device",
                             "name": "Nicolyon",
                             "description": "we drink french tea with snails here",
                             "ruler": "Nicole",
-                            "established": "2002"
+                            "established": "2002",
+                            "site_id": "3"
                         },
                         "geometry": {
                           "coordinates": [
@@ -121,11 +139,14 @@
                     },
                     {
                         "type": "Feature",
+                        "id": "10",
                         "properties": {
+                            "type": "device",
                             "name": "Iranicole",
                             "description": "we drink antisemetic tea here",
                             "ruler": "Nicole from Iran",
-                            "established": "2002"
+                            "established": "2002",
+                            "site_id": "2"
                         },
                         "geometry": {
                           "coordinates": [
@@ -140,15 +161,17 @@
         },
         {
           "properties": {
-            "name": "yellow layer"
+            "name": "Sites layer"
           },
-          "marker_source": "yellow.svg",
+          "marker_source": "map-marker-three-svgrepo-com.svg",
           "features_collection": {
               "type": "FeatureCollection",
               "features": [
                 {
                   "type": "Feature",
+                  "id": "1",
                   "properties": {
+                    "type": "site",
                     "name": "Nicolimassol",
                     "description": "we partea here",
                     "ruler": "Nicole",
@@ -164,7 +187,9 @@
                 },
                 {
                   "type": "Feature",
+                  "id": "2",
                   "properties": {
+                    "type": "site",
                     "name": "Lisbonicole",
                     "description": "we drink spanish tea here",
                     "ruler": "Nicole",
@@ -180,7 +205,9 @@
                 },
                 {
                   "type": "Feature",
+                  "id": "3",
                   "properties": {
+                    "type": "site",
                     "name": "Milanicole",
                     "description": "we drink italian tea here",
                     "ruler": "Nicole",

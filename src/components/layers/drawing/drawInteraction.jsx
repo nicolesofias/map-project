@@ -41,10 +41,15 @@ const DrawInteraction = () => {
 
     }
 
+    const clearSourceOfLayer = (name) => {
+        getArrayOfAllLayers(map).find(element => element.getProperties().name === name).getSource().clear();
+    }
+
     const handleClearDraw = () => {
         if (!map) return;
 
-        getArrayOfAllLayers(map).find(element => element.getProperties().name === LayerNames.DrawLayerName).getSource().clear();
+        clearSourceOfLayer(LayerNames.DrawLayerName)
+        clearSourceOfLayer(LayerNames.LinesLayerName)
         setDisableButton(false)
         setCounterArray(null)
     }

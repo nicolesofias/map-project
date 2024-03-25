@@ -6,7 +6,7 @@ const PopoverComponent = ({anchorEl, open, handleClose, info}) => {
   return (
         info?
         <Popover open={open} anchorEl={anchorEl} onClose={handleClose}>
-              {Object.keys(info).map((key) => (
+              {Object.keys(info).filter((key) => key !== "site_name").map((key) => (
                  <Typography key={key}>{key}: {info[key]}</Typography>
             ))
             }

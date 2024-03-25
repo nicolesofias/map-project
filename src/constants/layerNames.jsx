@@ -1,3 +1,4 @@
 export const LayerNames = {
-    DrawLayerName: 'drawLayer'
+    DrawLayerName: 'drawLayer',
+    LinesLayerName: 'lines'
 }
