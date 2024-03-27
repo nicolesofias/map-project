@@ -4,7 +4,7 @@ import Draw from 'ol/interaction/Draw'
 import VectorSource from 'ol/source/Vector'
 import VectorLayer from 'ol/layer/Vector'
 import { Box, Button, Typography } from '@mui/material'
-import { getArrayOfAllLayers, getArrayOfVectorLayersWithoutDrawing } from '../../map/mapUtils'
+import { findlayerByName, getArrayOfAllLayers, getArrayOfVectorLayersWithoutDrawing } from '../../map/mapUtils'
 import featuresCounter from './featuresCounter'
 import { LayerNames } from '../../../constants/layerNames'
 import { GeoJsonTypes } from '../../../constants/GeoJsonTypes'
@@ -25,7 +25,7 @@ const DrawInteraction = () => {
 
     const handleInteraction = () => {
         if (!map) return;
-        const source = getArrayOfAllLayers(map).find(element => element.getProperties().name === LayerNames.DrawLayerName).getSource()
+        const source = findlayerByName(LayerNames.DrawLayerName, map).getSource()
         const draw = new Draw({
           source: source,
           type: GeoJsonTypes.Polygon,
@@ -42,7 +42,7 @@ const DrawInteraction = () => {
     }
 
     const clearSourceOfLayer = (name) => {
-        getArrayOfAllLayers(map).find(element => element.getProperties().name === name).getSource().clear();
+        findlayerByName(name, map).getSource().clear();
     }
 
     const handleClearDraw = () => {
@@ -67,12 +67,12 @@ const DrawInteraction = () => {
     return (
         <Box>
             <Box sx={{display: 'flex', justifyContent: 'center', gap: '5px'}}>
-                <Button disabled={disableButton} variant="contained" onClick={handleInteraction} sx={{mt: '10px', marginLeft: '10px'}}>create a polygon</Button>
-                <Button variant="contained" onClick={handleClearDraw} sx={{mt: '10px', marginLeft: '10px'}}>clear</Button>
+                <Button disabled={disableButton} variant="contained" onClick={handleInteraction} sx={{mt: '10px'}}>create a polygon</Button>
+                <Button variant="contained" onClick={handleClearDraw} sx={{mt: '10px'}}>clear</Button>
             </Box>
-            <Box>
+            <Box sx={{display: 'flex', justifyContent: 'center'}}>
                 {vector_layers_without_drawing.map((layer, index) => (
-                    counterArray && <Typography sx={{ml: '5px'}} key={layer.getProperties().name}>{layer.getProperties().name}: {`${counterArray[index]} features`}  </Typography>
+                    counterArray && <Typography sx={{mr: '5px'}} key={layer.getProperties().name}>{layer.getProperties().name}: {`${counterArray[index]} features. `}  </Typography>
                 ))}
             </Box>
         </Box>

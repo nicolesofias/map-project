@@ -1,4 +1,5 @@
 export const LayerNames = {
     DrawLayerName: 'drawLayer',
-    LinesLayerName: 'lines'
+    LinesLayerName: 'lines',
+    FeaturesFromSelection: 'selection'
 }

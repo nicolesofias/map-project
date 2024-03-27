@@ -3,7 +3,7 @@ import TileLayer from 'ol/layer/Tile'
 import OSM from 'ol/source/OSM'
 import { DEFAULT_PROJECTION, DEFAULT_ZOOM } from '../../constants/defaults'
 import VectorLayer from "ol/layer/Vector";
-import { layersPath } from '../../constants/paths';
+import { layersPath, selectionFeaturesPath } from '../../constants/paths';
 import { LayerNames } from '../../constants/layerNames';
 
 export const createMap = () => {
@@ -39,6 +39,18 @@ export const getArrayOfAllLayers = (map) => {
     return fetch(layersPath).then((res) => res.json())
   }
 
+  export const getFeaturesForSelection = () => {
+    return fetch(selectionFeaturesPath).then((res) => res.json())
+  }
+
   export const findFeatureById = (id, layersArray) => {
     return layersArray.map((layer) => layer.getSource().getFeatureById(id)).find((val) => val !== null)
+  }
+
+  export const findlayerByName = (name, map) => {
+    return map.getAllLayers().find((layer) => layer.getProperties().name === name)
+  }
+
+  export const findFeatureByIdFromLayer = (id, layer) => {
+    return layer.getSource().getFeatureById(id)
   }

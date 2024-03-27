@@ -3,7 +3,7 @@ import 'ol/ol.css'
 import { useMap } from "../../contexts/mapContext/mapContext";
 import DisplayLayers from "../layers/displayLayers";
 import DrawInteraction from "../layers/drawing/drawInteraction";
-import { Box, Container } from "@mui/material";
+import { Box } from "@mui/material";
 
 
 
@@ -19,9 +19,9 @@ const MapComponent = () => {
     
     return (
         <Box>
-          <Container ref={mapContainerRef} style={{ width: '100vw', height: '400px'}}/>
-          <DisplayLayers />
+          <Box ref={mapContainerRef} style={{ width: '100vw', height: '400px'}}/>
           <DrawInteraction />
+          <DisplayLayers />
         </Box>
     )
 }

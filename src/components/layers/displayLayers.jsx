@@ -8,27 +8,33 @@ import { Box } from '@mui/material';
 import PopoverComponent from '../map/popover/PopoverComponent';
 import GeoJSON from 'ol/format/GeoJSON.js';
 import { Overlay } from 'ol';
-import { findFeatureById, getArrayOfAllLayers, getArrayOfVectorLayersWithoutDrawing, getLayers } from '../map/mapUtils';
-import { createLine } from '../features/createLine';
+import { findFeatureById, findFeatureByIdFromLayer, findlayerByName, getArrayOfAllLayers, getArrayOfVectorLayersWithoutDrawing, getFeaturesForSelection, getLayers } from '../map/mapUtils';
 import handleConnectedFeatures from '../features/handleConnectedFeatures';
 import { LayerNames } from '../../constants/layerNames';
+import SelectionComponent from '../map/selectFeatureToAdd/selectionComponent';
+import handleAddFeatureAfterClick from '../features/handleAddFeatureAfterClick';
 
 const DisplayLayers = () => {
     const map = useMap();
     const popupContainerRef = useRef(null);
     const [openPopup, setOpenPopup] = useState(false)
     const [properties, setProperties] = useState(null)
-    // const [vector_layers_without_drawing, set_vector_layers_without_drawing] = useState(null)
+
+    const selectionFeaturesArrayRef = useRef([])
+    const[selectionFeaturesArray, setSelectionFeaturesArray] = useState([])
+    const selectionModeRef = useRef(false)
+    const selectedFeatureRef = useRef(null)
+    const [removeButtonExists, setRemoveButtonExists] = useState(false)
 
     const showInfoForPopup = (feature) => {
         const info = feature.getProperties()
         setProperties({
+          id: feature.getId(),
           type: info.type,
           name: info.name,
           description: info.description,
           ruler: info.ruler,
           established: info.established,
-          site_name: info.site_name ? info.site_name : ""
         })
         map.addOverlay(new Overlay({
           id: 'popup',
@@ -58,42 +64,132 @@ const DisplayLayers = () => {
                     map.addLayer(current_vector_layer)
                 }
             })
-            // add the lines layer
+            // add the' lines layer' and the 'features from selection layer'
             const linesLayer = new VectorLayer({
               source: new VectorSource(),
               properties: {
                   name: LayerNames.LinesLayerName
               },
           })
+
+          const selectionFeaturesLayer = new VectorLayer({
+            source: new VectorSource(),
+            properties: {
+              name: LayerNames.FeaturesFromSelection
+            },
+            style: new Style({
+              image: new Icon({
+                src: 'yellow.svg'
+              })
+            })
+          })
+
           map.addLayer(linesLayer)
+          map.addLayer(selectionFeaturesLayer)
         }).catch((err) => console.log(err));
     }
 
-    const handleMapClick = (evt) => {
-          getArrayOfVectorLayersWithoutDrawing(map).forEach((vectorLayer) => {vectorLayer.getFeatures(evt.pixel).then(function (features) {
-          const feature = features.length ? features[0] : undefined;
-          if (feature) {
-            showInfoForPopup(feature)
-            setOpenPopup(true)
-            handleConnectedFeatures(feature, map)
-          }
-        })})
+    const readSelectionFeatures = () => {
+      getFeaturesForSelection().then((data) => {
+        const feats = new GeoJSON().readFeatures(data)
+        selectionFeaturesArrayRef.current = feats
+        setSelectionFeaturesArray(feats)
+      }).catch((err) => console.log(err))
+  }
+
+    const handleSelectFeature = (event, value) => {
+      selectedFeatureRef.current = value
+      if(value) {
+        selectionModeRef.current = true
       }
+      else {
+        selectionModeRef.current = false
+      }
+    }
+
+    const handleMapClick = (evt) => {
+
+      // display feature info:
+
+      getArrayOfVectorLayersWithoutDrawing(map).forEach((vectorLayer) => {vectorLayer.getFeatures(evt.pixel).then(function (features) {
+        const feature = features.length ? features[0] : undefined;
+        if (feature) {
+          setRemoveButtonExists(false)
+          showInfoForPopup(feature)
+          setOpenPopup(true)
+          handleConnectedFeatures(feature, map)
+        }
+      })})
+
+      // if clicked on newly added feature
+      findlayerByName(LayerNames.FeaturesFromSelection, map).getFeatures(evt.pixel).then((features) => {
+        const feature = features.length ? features[0] : undefined;
+        if(feature) {
+          setRemoveButtonExists(true)
+          showInfoForPopup(feature)
+          setOpenPopup(true)
+        }
+      })
+
+      // add selected feature at the clicked pixel:
+
+      if (selectionModeRef.current === true){
+        const currentFeature = selectedFeatureRef.current
+        const currentSelectionFeaturesArray = selectionFeaturesArrayRef.current
+
+        const coordinates = map.getCoordinateFromPixel(evt.pixel)
+        handleAddFeatureAfterClick(currentFeature, coordinates, map)
+
+        //remove feature from selection options
+        const index = currentSelectionFeaturesArray.indexOf(currentFeature)
+        const newSelectionFeaturesArray = [...currentSelectionFeaturesArray]
+        newSelectionFeaturesArray.splice(index, 1)
+        selectionFeaturesArrayRef.current = newSelectionFeaturesArray
+        setSelectionFeaturesArray(newSelectionFeaturesArray)
+        
+        //exit selection mode:
+        selectionModeRef.current = false 
+        selectedFeatureRef.current = null
+      }
+  }
     
     const handleClosePopover = () => {
         setOpenPopup(false);
         setProperties(null)
     }
 
+    const handleRemoveClickedSelectionFeature = () => {
+      const layer = findlayerByName(LayerNames.FeaturesFromSelection, map)
+      const featureToRemove = findFeatureByIdFromLayer(properties.id, layer)
+      layer.getSource().removeFeature(featureToRemove)
+
+      const newSelectionFeaturesArray = [...selectionFeaturesArray]
+      newSelectionFeaturesArray.push(featureToRemove)
+      setSelectionFeaturesArray(newSelectionFeaturesArray)
+      selectionFeaturesArrayRef.current = newSelectionFeaturesArray
+
+      setOpenPopup(false)
+    }
+
     useEffect(() => {
         addLayersToMap()
+        readSelectionFeatures()
         map.on('click', handleMapClick)
     }, [])
 
+    // useEffect(() => {
+    //   if(selectionModeRef.current === true)
+    //     map.getTargetElement().style.cursor = "url('yellow.svg'), auto"
+    // }, [selectionModeRef.current])
+
     return (
+      <Box>
         <Box ref={popupContainerRef}>
-            <PopoverComponent anchorEl={popupContainerRef.current} handleClose={handleClosePopover} info={properties} open={openPopup}/>
+            <PopoverComponent anchorEl={popupContainerRef.current} handleClose={handleClosePopover} info={properties} open={openPopup} removeButton={removeButtonExists} handleRemove={handleRemoveClickedSelectionFeature}/>
         </Box>
+        <SelectionComponent selectionFeaturesArray={selectionFeaturesArray} selectedFeature={selectedFeatureRef.current} handleChange={handleSelectFeature} />
+      </Box>
+        
     )
 }
 

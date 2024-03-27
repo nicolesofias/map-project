@@ -1,0 +1,59 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "id": "11",
+        "properties": {
+          "name": "Nicole City",
+          "type": "device",
+          "description": "great city",
+          "ruler": "Nicole",
+          "established": "2002"
+        },
+        "geometry": {
+          "coordinates": [
+            -123.64098830665708,
+            47.75311265259214
+          ],
+          "type": "Point"
+        }
+      },
+      {
+        "type": "Feature",
+        "id": "12",
+        "properties": {
+          "name": "Nicole State",
+          "type": "device",
+          "description": "great state",
+          "ruler": "Nicole",
+          "established": "2002"
+        },
+        "geometry": {
+          "coordinates": [
+            -123.64098830665708,
+            47.75311265259214
+          ],
+          "type": "Point"
+        }
+      },
+      {
+        "type": "Feature",
+        "id": "13",
+        "properties": {
+          "name": "Nicole Country",
+          "type": "device",
+          "description": "great country",
+          "ruler": "Nicole",
+          "established": "2002"
+        },
+        "geometry": {
+          "coordinates": [
+            -123.64098830665708,
+            47.75311265259214
+          ],
+          "type": "Point"
+        }
+      }
+    ]
+  }
