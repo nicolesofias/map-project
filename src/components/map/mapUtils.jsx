@@ -4,7 +4,7 @@ import OSM from 'ol/source/OSM'
 import { DEFAULT_PROJECTION, DEFAULT_ZOOM } from '../../constants/defaults'
 import VectorLayer from "ol/layer/Vector";
 import { layersPath, selectionFeaturesPath } from '../../constants/paths';
-import { LayerNames } from '../../constants/layerNames';
+import { LayerNames, LayersWithDrawingNames } from '../../constants/layerNames';
 
 export const createMap = () => {
     const mapInstance = new Map({
@@ -32,7 +32,7 @@ export const getArrayOfAllLayers = (map) => {
   }
   
   export const getArrayOfVectorLayersWithoutDrawing = (map) => {
-      return map.getAllLayers().filter((layer) => layer instanceof VectorLayer && !Object.values(LayerNames).includes(layer.getProperties().name));
+      return map.getAllLayers().filter((layer) => layer instanceof VectorLayer && !Object.values(LayersWithDrawingNames).includes(layer.getProperties().name));
   }
 
   export const getLayers = () => {

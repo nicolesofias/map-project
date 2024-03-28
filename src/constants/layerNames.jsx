@@ -3,3 +3,8 @@ export const LayerNames = {
     LinesLayerName: 'lines',
     FeaturesFromSelection: 'selection'
 }
+
+export const LayersWithDrawingNames = {
+    DrawLayerName: 'drawLayer',
+    LinesLayerName: 'lines',
+}

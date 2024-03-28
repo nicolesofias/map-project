@@ -9,7 +9,8 @@
           "type": "device",
           "description": "great city",
           "ruler": "Nicole",
-          "established": "2002"
+          "established": "2002",
+          "site_id": "1"
         },
         "geometry": {
           "coordinates": [
@@ -27,7 +28,8 @@
           "type": "device",
           "description": "great state",
           "ruler": "Nicole",
-          "established": "2002"
+          "established": "2002",
+          "site_id": "2"
         },
         "geometry": {
           "coordinates": [
@@ -45,7 +47,8 @@
           "type": "device",
           "description": "great country",
           "ruler": "Nicole",
-          "established": "2002"
+          "established": "2002",
+          "site_id": "3"
         },
         "geometry": {
           "coordinates": [

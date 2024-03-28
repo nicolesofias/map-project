@@ -118,7 +118,12 @@ const DisplayLayers = () => {
       getArrayOfVectorLayersWithoutDrawing(map).forEach((vectorLayer) => {vectorLayer.getFeatures(evt.pixel).then(function (features) {
         const feature = features.length ? features[0] : undefined;
         if (feature) {
-          setRemoveButtonExists(false)
+          if(vectorLayer.getProperties().name === LayerNames.FeaturesFromSelection) {
+            setRemoveButtonExists(true)
+          }
+          else {
+            setRemoveButtonExists(false)
+          }
           showInfoForPopup(feature)
           setOpenPopup(true)
           handleConnectedFeatures(feature, map)
@@ -126,14 +131,14 @@ const DisplayLayers = () => {
       })})
 
       // if clicked on newly added feature
-      findlayerByName(LayerNames.FeaturesFromSelection, map).getFeatures(evt.pixel).then((features) => {
-        const feature = features.length ? features[0] : undefined;
-        if(feature) {
-          setRemoveButtonExists(true)
-          showInfoForPopup(feature)
-          setOpenPopup(true)
-        }
-      })
+      // findlayerByName(LayerNames.FeaturesFromSelection, map).getFeatures(evt.pixel).then((features) => {
+      //   const feature = features.length ? features[0] : undefined;
+      //   if(feature) {
+      //     setRemoveButtonExists(true)
+      //     showInfoForPopup(feature)
+      //     setOpenPopup(true)
+      //   }
+      // })
 
       // add selected feature at the clicked pixel:
 
