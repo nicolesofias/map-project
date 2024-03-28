@@ -13,6 +13,7 @@ import handleConnectedFeatures from '../features/handleConnectedFeatures';
 import { LayerNames } from '../../constants/layerNames';
 import SelectionComponent from '../map/selectFeatureToAdd/selectionComponent';
 import handleAddFeatureAfterClick from '../features/handleAddFeatureAfterClick';
+import CustomCursor from "../../../public/yellow.svg";
 
 const DisplayLayers = () => {
     const map = useMap();
@@ -23,6 +24,7 @@ const DisplayLayers = () => {
     const selectionFeaturesArrayRef = useRef([])
     const[selectionFeaturesArray, setSelectionFeaturesArray] = useState([])
     const selectionModeRef = useRef(false)
+    const [selectionMode, setSelectionMode] = useState(false)
     const selectedFeatureRef = useRef(null)
     const [removeButtonExists, setRemoveButtonExists] = useState(false)
 
@@ -101,9 +103,11 @@ const DisplayLayers = () => {
       selectedFeatureRef.current = value
       if(value) {
         selectionModeRef.current = true
+        setSelectionMode(true)
       }
       else {
         selectionModeRef.current = false
+        setSelectionMode(false)
       }
     }
 
@@ -134,6 +138,7 @@ const DisplayLayers = () => {
       // add selected feature at the clicked pixel:
 
       if (selectionModeRef.current === true){
+        console.log("in selection mode");
         const currentFeature = selectedFeatureRef.current
         const currentSelectionFeaturesArray = selectionFeaturesArrayRef.current
 
@@ -149,6 +154,7 @@ const DisplayLayers = () => {
         
         //exit selection mode:
         selectionModeRef.current = false 
+        setSelectionMode(false)
         selectedFeatureRef.current = null
       }
   }
@@ -175,12 +181,23 @@ const DisplayLayers = () => {
         addLayersToMap()
         readSelectionFeatures()
         map.on('click', handleMapClick)
+        // if(map.getTargetElement()) {
+          
+        // }
     }, [])
 
-    // useEffect(() => {
-    //   if(selectionModeRef.current === true)
-    //     map.getTargetElement().style.cursor = "url('yellow.svg'), auto"
-    // }, [selectionModeRef.current])
+    useEffect(() => {
+      if(map.getTargetElement()) {
+        const mapContainerStyle = map.getTargetElement().style
+        if(selectionMode)
+        {
+        mapContainerStyle.cursor = "url(" + CustomCursor + "), auto"
+        }
+        else {
+          mapContainerStyle.cursor = "auto"
+        }
+      }
+    }, [selectionMode])
 
     return (
       <Box>

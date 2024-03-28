@@ -4,6 +4,7 @@ import { useMap } from "../../contexts/mapContext/mapContext";
 import DisplayLayers from "../layers/displayLayers";
 import DrawInteraction from "../layers/drawing/drawInteraction";
 import { Box } from "@mui/material";
+import CustomCursor from "../../../public/yellow.svg";
 
 
 
